@@ -38,3 +38,26 @@ model_twfe <- feols(
 )
 
 summary(model_twfe)
+
+# Regression Table
+
+modelsummary(
+  list(
+    "OLS" = model_ols,
+    "Airport FE" = model_fe,
+    "Two-way FE" = model_twfe
+  ),
+  output = "output/tables/regression_table.html"
+)
+
+#relationship between flights and delays plot
+ggplot(panel_day, aes(flights_n, avg_arr_delay)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Relationship Between Flights and Delays",
+    x = "Number of Flights",
+    y = "Average Arrival Delay"
+  )
+
+ggsave("output/figures/delay_vs_flights.png", width = 8, height = 5)
